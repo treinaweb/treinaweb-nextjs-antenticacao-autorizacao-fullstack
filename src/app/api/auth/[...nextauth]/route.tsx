@@ -30,7 +30,11 @@ export const authOptions: NextAuthOptions = {
         return null;
       }
     })
-  ]
+  ],
+  theme: {
+    colorScheme: 'light',
+    logo: 'https://www.treinaweb.com.br/assets/images/treinaweb-logo@2x.webp'
+  }
 }
 
 const handler = NextAuth(authOptions);
