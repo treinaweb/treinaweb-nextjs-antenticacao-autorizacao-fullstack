@@ -10,6 +10,8 @@ import { useSession } from 'next-auth/react';
 import { Session } from 'next-auth';
 
 export default function PostList({ posts }: { posts: Post[] }) {
+  const { data: session } = useSession();
+
   return (
     <>
       <ul className={styles.postList}>
@@ -17,11 +19,7 @@ export default function PostList({ posts }: { posts: Post[] }) {
         return <PostListItem key={post.id} post={post} />;
       })}
       </ul>
-      <div style={{ textAlign: 'center' }}>
-        <Link href={'/posts/publish'}>
-          <button>Nobvo Post</button>
-        </Link>
-      </div>
+      {NewPostButton(session)}
     </>
   )
 }
@@ -39,6 +37,18 @@ export function PostListItem({ post }: { post: Post }) {
       {postActions(session, post)}
     </li>
   )
+}
+
+function NewPostButton(session: Session | null) {
+ if(!session) return null;
+
+ return (
+  <div style={{ textAlign: 'center' }}>
+    <Link href={'/posts/publish'}>
+      <button>Nobvo Post</button>
+    </Link>
+ </div>
+ )
 }
 
 function postActions(session: Session | null, post: Post) {
