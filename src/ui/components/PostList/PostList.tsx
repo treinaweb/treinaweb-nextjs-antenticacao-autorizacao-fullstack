@@ -45,7 +45,7 @@ function NewPostButton(session: Session | null) {
  return (
   <div style={{ textAlign: 'center' }}>
     <Link href={'/posts/publish'}>
-      <button>Nobvo Post</button>
+      <button>Novo Post</button>
     </Link>
  </div>
  )

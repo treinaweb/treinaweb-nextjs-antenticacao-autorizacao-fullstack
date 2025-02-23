@@ -4,6 +4,7 @@ import * as db from "@/backend/repository/user.repository";
 import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'TreinaBlog',
