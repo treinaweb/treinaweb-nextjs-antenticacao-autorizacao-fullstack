@@ -55,13 +55,17 @@ function NewPostButton(session: Session | null) {
 
 function postActions(session: Session | null, post: Post) {
   if(!session) return null;
+
+  const userRole = session.user.role?.toLowerCase();
   
   return (
     <div className={styles.postActions}>
-      <DeletePost id={post.id} />
-      <Link href={`posts/${post.slug}/edit`}>
-        <FontAwesomeIcon icon={faPenToSquare} style={{width: "15px", color: "#000"}}/>
-      </Link>
+     {userRole === 'admin' &&  <DeletePost id={post.id} />}
+     {(userRole === 'admin' || userRole === 'editor') && (
+       <Link href={`posts/${post.slug}/edit`}>
+       <FontAwesomeIcon icon={faPenToSquare} style={{width: "15px", color: "#000"}}/>
+     </Link>
+     )}
    </div>
   )
 }

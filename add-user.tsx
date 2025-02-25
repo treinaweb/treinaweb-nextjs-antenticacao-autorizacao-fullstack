@@ -9,10 +9,10 @@ async function main() {
 
     const user = await db.user.create({
       data: {
-        name: 'Paulo',
-        email: 'editor@editor.com',
+        name: 'Wesleu',
+        email: 'wesleygado@gmail.com',
         password: hashedPassword,
-        role: 'editor',
+        role: 'admin',
         active: true
       }
     });

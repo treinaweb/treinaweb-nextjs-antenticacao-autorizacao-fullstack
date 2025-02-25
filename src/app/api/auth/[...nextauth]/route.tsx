@@ -2,6 +2,8 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import * as db from "@/backend/repository/user.repository";
 import bcrypt from "bcrypt";
+import GithubProvider from "next-auth/providers/github";
+import { redirect } from "next/dist/server/api-utils";
 
 declare module 'next-auth' {
   interface Session {
@@ -17,6 +19,10 @@ declare module 'next-auth' {
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID ?? '',
+      clientSecret: process.env.GITHUB_SECRET ?? ''
+    }),
     CredentialsProvider({
       name: 'TreinaBlog',
       credentials: {
@@ -60,8 +66,11 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
       }
-    })
+    }),
   ],
+  pages: {
+    signIn: '/auth/signin',
+  },
   callbacks: {
     jwt: async ({token, user}) => {
       const customUser = user as any;
@@ -76,6 +85,19 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session: async ({ session, token }) => {
+      if(!token.role) {
+        const customUser = await db.obterUserPorEmail(token.email as string);
+
+        return  {
+          ...session,
+          user: {
+            name: token.name,
+            email: token.email,
+            role: customUser?.role,
+          }
+        }
+      }
+
       return {
         ...session,
         user: {
