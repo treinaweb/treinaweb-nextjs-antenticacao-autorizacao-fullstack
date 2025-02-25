@@ -1,3 +1,8 @@
+#### Projetos base utilizados
+Projeto | Link
+------ | ------
+Aplicação fullStack NestJS | [Link Repositório](https://github.com/treinaweb/treinaweb-nextjs-fullstack)
+
 #### Lista de commits
 Aula | Commit | Link
 ------ | ------ | ------
