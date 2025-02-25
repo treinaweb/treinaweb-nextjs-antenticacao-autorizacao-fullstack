@@ -27,6 +27,8 @@ export default function PostList({ posts }: { posts: Post[] }) {
 export function PostListItem({ post }: { post: Post }) {
   const { data: session } = useSession();
 
+  console.log(session);
+  
   return (
     <li className={styles.postListItem}>
       <Link href={`posts/${post.slug}`}>

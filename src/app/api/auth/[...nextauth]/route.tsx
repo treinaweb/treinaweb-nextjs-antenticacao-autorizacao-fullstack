@@ -3,6 +3,17 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import * as db from "@/backend/repository/user.repository";
 import bcrypt from "bcrypt";
 
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      name: string | null;
+      email: string | null;
+      image: string | null;
+      role: string | null;
+    }
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -40,7 +51,8 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            role: user.role
           }
 
         } catch (error) {
@@ -50,10 +62,35 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
+  callbacks: {
+    jwt: async ({token, user}) => {
+      const customUser = user as any;
+      
+      if(user) {
+        return {
+          ...token,
+          role: customUser.role
+        }
+      }
+
+      return token;
+    },
+    session: async ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          name: token.name,
+          email: token.email,
+          role: token.role
+        }
+      }
+    }
+  },
   theme: {
     colorScheme: 'light',
     logo: 'https://www.treinaweb.com.br/assets/images/treinaweb-logo@2x.webp'
   }
+  
 }
 
 const handler = NextAuth(authOptions);
