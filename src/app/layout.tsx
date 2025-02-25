@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import styles from "./page.module.css";
 import NextAuthProvider from "@/ui/components/NextAuthProvider/NextAuthProvider";
+import { LoginButton } from "@/ui/components/LoginButton/LoginButton";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,11 +22,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
-        <header>
+        <header className={styles.headerTitle}>
           <h1 className={styles.title}>
             Treina
             <span className={styles.titleSecondWord}>Blog</span>
           </h1>
+          <div className={styles.loginButtonContainer}>
+            <LoginButton />
+          </div>
         </header>
         {children}
         </NextAuthProvider>
